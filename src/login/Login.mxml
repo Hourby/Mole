@@ -21,9 +21,8 @@
 				{
 					
 					dispatchEvent(new LoginEvent(LoginEvent.LOGIN, userName.text, password.text));
-				
-					//loginActionResult3.token = samplePhp.loginAction(userName.text, password.text);
-					trace('Huhu');
+					getItemResult.token = samplePhp.getItem(userName.text, password.text);
+					Alert.show('Es ist ein Fehler aufgetreten' , 'Fehler');
 					
 				} else {
 					Alert.show('Es ist ein Fehler aufgetreten', 'Fehler');
@@ -49,6 +48,7 @@
 		<samplephp:SamplePhp id="samplePhp"
 							   fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail) + 'Hier ist ein Fehler'"
 							   showBusyCursor="true"/>
+		<s:CallResponder id="getItemResult"/>
 	</fx:Declarations>
 	
 	
