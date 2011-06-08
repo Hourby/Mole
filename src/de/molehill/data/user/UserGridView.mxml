@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="200" height="300"
+		 creationComplete="creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import de.molehill.logger.Logger;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				updateUserGrid(UserManager.instance.userlist);
+				UserManager.instance.addEventListener(UserEvent.CHANGE, onUsersChange);
+			}
+			
+			protected function onUsersChange(e:UserEvent):void
+			{
+				updateUserGrid(UserManager.instance.userlist);
+			}
+			
+			private function updateUserGrid(userVector:Vector.<UserVO>):void {
+				var list:ArrayList = new ArrayList();
+				for each (var userVO:UserVO in userVector) {
+					var obj:Object = new Object();
+					obj.name = userVO.name;
+					obj.peerID = userVO.peerID;
+					list.addItem(obj);
+				}
+				usergrid.dataProvider = list;
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:Rect left="0" right="0" top="0" bottom="0">
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry alpha="1.0" color="#333333" ratio="0"/>
+				<s:GradientEntry alpha="1" color="#000000" ratio="0.5"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:DataGrid id="usergrid" left="10" right="10" top="10" bottom="10" 
+				requestedRowCount="4" skinClass="spark.skins.spark.DataGridSkin">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="name"/>
+				<s:GridColumn dataField="peerID"/>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+</s:BorderContainer>

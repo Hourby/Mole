@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:user="de.molehill.data.user.*"
+		 width="100%" height="100%" 
+		 xmlns:samplephp="services.samplephp.*" 
+		 xmlns:productservice="services.productservice.*">
+	
+	<fx:Declarations>
+		<s:CallResponder id="countResult"/>
+		<samplephp:SamplePhp id="samplePhp"
+							 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+							 showBusyCursor="true"/>
+
+		
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			protected function textArea_creationCompleteHandler(event:FlexEvent):void
+			{
+				countResult.token = samplePhp.count();
+			}
+
+			
+		]]>
+	</fx:Script>
+	
+	<s:TextArea id="textArea" x="261" y="523" height="50"
+				creationComplete="textArea_creationCompleteHandler(event)"
+				text="{countResult.lastResult}"/>
+
+</s:Group>

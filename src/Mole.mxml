@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:navigation="components.navigation.*"
+			   xmlns:logging="de.molehill.view.logging.*"
+			   xmlns:components="components.*"
+			   xmlns:context="de.molehill.context.*"
+			   xmlns:logger="de.molehill.logger.*"
+			   xmlns:gameStateNavigation="de.molehill.gameStateNavigation.*"
+			   xmlns:user="de.molehill.user.*"
+			   xmlns:module="module.*"
+			   backgroundAlpha="0" creationComplete="init(event)" frameRate="60">
+	
+	<fx:Script>
+		<![CDATA[
+			import de.molehill.data.user.MyUser;
+			import de.molehill.data.user.UserManager;
+			import de.molehill.data.user.UserVO;
+			import de.molehill.levelEditor.TextureManager;
+			import de.molehill.logger.Logger;
+			import de.molehill.net.AMFDataEvent;
+			import de.molehill.net.P2PConnectionEvent;
+			import de.molehill.net.P2P_Manager;
+			
+			import mx.events.FlexEvent;
+			
+			private var localSO:SharedObject;
+			private var _p2pManager:P2P_Manager;
+			
+			private function init(evt:FlexEvent):void {
+				_p2pManager = P2P_Manager.instance;
+				_p2pManager.addEventListener(P2PConnectionEvent.ON_CONNECT, onConnectCirrus);
+				_p2pManager.addEventListener(AMFDataEvent.ON_RECEIVE_DATA, onReceiveAMFData);
+				_p2pManager.addEventListener(P2PConnectionEvent.ON_NEIGHBOR_DISCONNECT, onNeighborDisconnect);
+				_p2pManager.doConnect();
+				TextureManager.instance.loadTextures();
+				TextureManager.instance.addEventListener("TEXTURE_LOAD_COMPLETE", onTexturesLoaded);
+				Logger.instance.setView(loggerView);
+			}
+			
+			private function onConnectCirrus(event:P2PConnectionEvent):void {
+				Logger.instance.addLog("Main", "connect to Cirrus");
+				Logger.instance.addLog("myPeerID", event.peerID);
+				MyUser.instance.peerID=event.peerID;
+				MyUser.instance.name="User " + uint(Math.random() * 1000);
+				//_p2pManager.send(new UserVO(MyUser.instance.name, MyUser.instance.peerID));
+				gameContainer.initNetComponents();
+			}
+			
+			protected function onReceiveAMFData(e:AMFDataEvent):void {
+				if (e.vo is UserVO)
+					UserManager.instance.addUser(e.vo as UserVO);
+			}
+			
+			private function onTexturesLoaded(e:Event):void {
+				gameContainer.levelEditorButton.enabled = true;
+			}
+			
+			protected function onNeighborDisconnect(event:P2PConnectionEvent):void {
+				UserManager.instance.removeUser(event.peerID);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<gameStateNavigation:GameContainerView  id="gameContainer" left="0" right="0" top="0" bottom="0"/>
+	<s:Group width="100%" height="100%" >
+		<s:Rect left="1" right="1" top="1" bottom="1">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Rect>
+		<logger:LoggerView id="loggerView" x="890.2" y="302.05" visible="false"/>
+		
+	</s:Group>
+</s:Application>

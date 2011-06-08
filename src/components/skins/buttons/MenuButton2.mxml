@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		width="150" height="20" >
+	
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	
+	<s:Rect x="0" y="0" width="150" height="20" radiusX="10">
+		<s:fill>
+			<s:SolidColor color="#000000"/>
+		</s:fill>
+		<s:filters>
+			<s:BevelFilter angle="270" blurX="2" blurY="2" distance="1"
+						   highlightAlpha="1.0" highlightColor="#666666" knockout="false"
+						   quality="2" shadowAlpha="1.0" shadowColor="#000000" strength="1"
+						   type="inner"/>
+		</s:filters>
+	</s:Rect>
+	
+	<s:transitions>
+		<s:Transition fromState="over" interruptionBehavior="stop" toState="up">
+		</s:Transition>
+		<s:Transition fromState="up" interruptionBehavior="stop" toState="disabled">
+		</s:Transition>
+		<s:Transition fromState="up" interruptionBehavior="stop" toState="down">
+		</s:Transition>
+		<s:Transition fromState="up" interruptionBehavior="stop" toState="over">
+		</s:Transition>
+		<s:Transition fromState="down" interruptionBehavior="stop" toState="up">
+		</s:Transition>
+		<s:Transition fromState="disabled" interruptionBehavior="stop" toState="up">
+		</s:Transition>
+	</s:transitions>
+	
+</s:Skin>

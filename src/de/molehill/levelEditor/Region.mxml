@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				xmlns:code="http://code.google.com/p/flexlib/" >
+	
+	<fx:Script>
+		<![CDATA[
+			import de.molehill.levelEditor.QuadField;
+			import mx.containers.Canvas;
+			
+			private var bgContainer:Sprite;
+			private var roadContainer:Sprite;
+			private var hexFields:Vector.<Vector.<QuadField>>;
+
+			public function addFields(container:Sprite):void {
+				fieldContainer.rawChildren.addChild(container);
+			}
+		]]>
+	</fx:Script>	
+	<code:DragScrollingCanvas id="scrollingCanvas" width="100%" height="100%" childrenDoDrag="true" cornerRadius="0">
+		<mx:Canvas id="fieldContainer"/>
+	</code:DragScrollingCanvas>
+</s:Group>

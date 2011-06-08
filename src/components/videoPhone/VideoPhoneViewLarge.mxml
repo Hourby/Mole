@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+	ADOBE SYSTEMS INCORPORATED
+	Copyright 2008 Adobe Systems Incorporated
+	All Rights Reserved.
+
+	NOTICE: Adobe permits you to use, modify, and distribute this file
+	in accordance with the terms of the license agreement accompanying it.
+	
+	Author: Jozsef Vass
+-->
+	
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   xmlns:user="de.molehill.data.user.*"
+				   xmlns:components="components.*"
+				   width="696" height="606" backgroundColor="#353535"
+				   creationComplete="creationCompleteHandler(event)" xmlns:chat="de.molehill.components.chat.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.events.SliderEvent;
+			
+			[Bindable]
+			private var _model:VideoPhoneModel;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void {
+				chat.addEventListener(TextEvent.TEXT_INPUT, onSend);
+			}
+			
+			public function setModel(model:VideoPhoneModel):void {
+				_model = model;
+				_model.addEventListener(VideoPhoneEvent.CALLSTATE_CHANGED, onCallStateChanged);
+				_model.addEventListener(VideoPhoneEvent.REMOTE_VIDEO, onReceivedRemoteVideo);
+				_model.addEventListener(VideoPhoneEvent.LOCAL_VIDEO, onReceivedLocalVideo);
+				_model.addEventListener(VideoPhoneEvent.INCOMING_MESSAGE, onIncomingMessage);
+			}
+			protected function usergridview_clickHandler(event:MouseEvent):void {
+				_model.callUser(event.target.label);
+			}
+
+			protected function receiveAudioCheckbox_clickHandler(event:MouseEvent):void {
+				_model.receiveAudio(receiveAudioCheckbox.selected);
+			}
+
+			protected function receiveVideoCheckbox_clickHandler(event:MouseEvent):void {
+				_model.receiveVideo(receiveVideoCheckbox.selected);
+			}
+
+			private function onSend(e:TextEvent):void {
+				_model.sendMessage(e.text);
+			}
+
+			protected function micSelection_changeHandler(event:ListEvent):void
+			{
+				_model.changeMic(micSelection.selectedIndex);
+			}
+
+			protected function sendAudioCheckbox_clickHandler(event:MouseEvent):void {
+				_model.startAudio(sendAudioCheckbox.selected);
+			}
+
+			protected function speexQualitySelector_changeHandler(event:ListEvent):void {
+				var quality:int = int(speexQualitySelector.selectedItem);
+				_model.changeSpeexQuality(quality);
+			}
+
+			protected function cameraSelection_changeHandler(event:ListEvent):void {
+				_model.changeCamera(cameraSelection.selectedIndex);
+			}
+
+
+			protected function hslider1_changeHandler(event:SliderEvent):void {
+				_model.changeVideoQuality(event.value);
+			}
+
+
+			protected function sendVideoCheckbox_clickHandler(event:MouseEvent):void {
+				_model.startVideo(sendVideoCheckbox.selected);
+			}
+
+			protected function onCallStateChanged(event:VideoPhoneEvent):void {
+				callStateViewStack.selectedIndex = int(event.data);
+			}
+
+			protected function onReceivedRemoteVideo(event:VideoPhoneEvent):void {
+				remoteVideoDisplay.addChild(event.data as Video);
+			}
+
+			protected function onReceivedLocalVideo(event:VideoPhoneEvent):void {
+				localVideoDisplay.attachCamera(event.data as Camera);
+			}
+					
+			protected function onIncomingMessage(event:VideoPhoneEvent):void
+			{
+				chat.receiveMessage(event.data as String);				
+			}
+			
+		]]>
+	</fx:Script>
+
+	<s:states>
+		<s:State name="State1"/>
+	</s:states>
+
+	<mx:ViewStack id="callStateViewStack" left="170" top="24" width="424" height="30" creationPolicy="all" paddingBottom="5"
+				  paddingLeft="5" paddingRight="5" paddingTop="5" resizeToContent="true"
+				  selectedIndex="{_model.callState}">
+		<mx:HBox>
+			<s:Label text="call not possible"/>
+		</mx:HBox>
+		<mx:HBox>
+			<s:Label text="choose a user for calling"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Calling {_model.remoteName}" color="0xffffff"/>
+			<mx:Button label="CANCEL" click="{_model.cancelCall()}"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Incoming call from: {_model.remoteName}" color="0xffffff"/>
+			<mx:Button label="ACCEPT" click="_model.acceptCall()" />
+			<mx:Button label="REJECT" click="_model.rejectCall()" />
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Call in progress with {_model.remoteName}" color="0xffffff"/>
+			<mx:Button label="HANGUP" click="_model.onHangup()" />
+			<mx:Label id="callTimerText" color="0xffffff"/>
+		</mx:HBox>
+		<mx:HBox>
+			<mx:Label text="Call failed to {_model.callPartner.name}" color="0xffffff"/>
+			<mx:Button label="HANGUP" click="_model.onHangup()" />
+		</mx:HBox>
+	</mx:ViewStack>
+	<s:HGroup x="176" y="53">
+		<mx:VideoDisplay id="remoteVideoDisplay" width="320" height="240" />
+		<mx:VBox x="325" y="2">
+			<mx:VideoDisplay id="localVideoDisplay" width="180" height="135" />
+			
+			<mx:HBox>
+				<mx:Label text="Mic:" color="0xffffff" width="56"/>
+				<mx:HSlider id="micVolumeSlider" showDataTip="false" width="120" minimum="0" maximum="100" change="_model.changeMicVolume(event.value)"/>
+			</mx:HBox>
+            <mx:HBox visible="false" includeInLayout="false">
+            	<mx:Label text="Microphone: " color="0xffffff"/>
+            	<mx:Label id="micActivityLabel" color="0xffffff"/>
+            </mx:HBox>
+			<mx:HBox>
+				<mx:Label text="Speaker:" color="0xffffff" width="56"/>
+				<mx:HSlider id="speakerVolumeSlider" showDataTip="false" width="120" minimum="0" maximum="1" change="_model.changeSpeakerVolume(event.value)"/>
+			</mx:HBox>				
+			<mx:HBox>
+				<mx:Label text="Receive:" color="0xffffff" width="60"/>
+				<mx:CheckBox id="receiveAudioCheckbox" label="Audio"
+							 click="receiveAudioCheckbox_clickHandler(event)" color="#FFFFFF"
+							 fontSize="9" selected="true" styleName="buttonStyle"/>
+				<mx:CheckBox id="receiveVideoCheckbox" label="Video"
+							 click="receiveVideoCheckbox_clickHandler(event)" color="#FFFFFF"
+							 fontSize="9" selected="true" styleName="buttonStyle"/>
+			</mx:HBox>
+			<mx:HBox>
+				<mx:Label text="Send:" color="0xffffff" width="60"/>
+				<mx:CheckBox id="sendAudioCheckbox" label="Audio"
+							 click="sendAudioCheckbox_clickHandler(event)" color="#FFFFFF"
+							 fontSize="9" selected="true" styleName="buttonStyle"/>
+				<mx:CheckBox id="sendVideoCheckbox" label="Video"
+							 click="sendVideoCheckbox_clickHandler(event)" color="#FFFFFF"
+							 fontSize="9" selected="true" styleName="buttonStyle"/>
+			</mx:HBox>
+		</mx:VBox>
+	</s:HGroup>
+<!--	<mx:TextArea id="textOutput" x="179" y="314" width="509" height="100" editable="false"
+				 verticalScrollPolicy="auto"/>
+	<mx:HBox x="175" y="420">
+		<mx:TextInput id="textInput" width="432" enter="onSend()"/>
+		<mx:Button label="SEND" click="onSend()" enabled="{textInput.text.length > 0 }"/>
+	</mx:HBox>-->
+
+	<s:Group x="205" y="447" width="275" height="149">
+
+		<mx:HBox left="0" right="21">
+			<mx:Label text="Audio capture: " color="0xffffff"/>
+			<mx:ComboBox id="micSelection" dataProvider="{_model.micNames}" change="micSelection_changeHandler(event)" />
+		</mx:HBox>
+		<mx:HBox x="0" y="29">
+			<mx:Label x="85" y="10" color="0xffffff" text="Video capture: "/>
+			<mx:ComboBox id="cameraSelection" x="44" y="33" change="cameraSelection_changeHandler(event)"
+						 dataProvider="{_model.cameraNames}"/>
+		</mx:HBox>
+		<mx:HBox x="0" y="62">
+			<mx:Label x="0" y="38" color="#FFFFFF" text="Encode quality: "/>
+			<mx:ComboBox id="speexQualitySelector" x="88" y="79"
+						 change="speexQualitySelector_changeHandler(event)"
+						 dataProvider="{[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}" selectedIndex="6"/>
+		</mx:HBox>
+		<mx:HSlider x="119" y="91" width="150" height="42" change="hslider1_changeHandler(event)"
+					labels="[0, 25, 50, 75, 100]" maximum="100" minimum="1" showDataTip="false"
+					tickInterval="25" value="80"/>
+	</s:Group>
+	<user:UserGridView x="10" y="28" width="152" height="571"
+					   click="usergridview_clickHandler(event)">
+	</user:UserGridView>
+	<s:Label x="608" y="33" text="{_model.callState}"/>
+	<chat:Chat id="chat" x="176" y="304" width="508" height="148" backgroundColor="#353535">
+	</chat:Chat>
+</s:BorderContainer>

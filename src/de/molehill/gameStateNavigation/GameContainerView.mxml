@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:levelEditor="de.molehill.levelEditor.*"
+		 xmlns:videoChat="de.molehill.videoChat.*"
+		 xmlns:components="components.*"
+		 xmlns:user="de.molehill.data.user.*"
+		 xmlns:videoPhone="components.videoPhone.*"
+		 xmlns:login="login.*"
+		 width="800" height="600" creationComplete="group1_creationCompleteHandler(event)"
+		 currentState="LoginState" xmlns:gameStateNavigation="de.molehill.gameStateNavigation.*" xmlns:chat="de.molehill.components.chat.*">
+	
+	<fx:Declarations>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import components.videoPhone.VideoPhoneModel;
+			
+			import de.molehill.data.user.UserVO;
+			import de.molehill.logger.Logger;
+			
+			import mx.events.FlexEvent;
+			
+			private var _videoPhoneModel:VideoPhoneModel;
+			
+			 private function group1_creationCompleteHandler(e:FlexEvent):void {
+				lobbyButton.addEventListener(MouseEvent.CLICK, lobbyButton_clickHandler);
+				headquarterButton.addEventListener(MouseEvent.CLICK, headquarterButton_clickHandler);
+				levelEditorButton.addEventListener(MouseEvent.CLICK, levelEditorButton_clickHandler);
+				playButton.addEventListener(MouseEvent.CLICK, playButton_clickHandler);
+				loggerButton.addEventListener(MouseEvent.CLICK, loggerButton_clickHandler);
+			}
+			
+			public function initNetComponents():void {
+				_videoPhoneModel = new VideoPhoneModel();
+			}
+			
+			private function lobbyButton_clickHandler(e:MouseEvent):void {
+				currentState = "LobbyState";
+			}
+			
+			private function headquarterButton_clickHandler(e:MouseEvent):void {
+				currentState = "HeadquarterState";
+			}
+			
+			private function levelEditorButton_clickHandler(e:MouseEvent):void {
+				currentState = "LevelEditorState";
+			}
+
+			private function playButton_clickHandler(e:MouseEvent):void {
+				currentState = "PlayState";
+			}		
+
+			protected function loggerButton_clickHandler(event:MouseEvent):void
+			{
+				Logger.instance.show();
+			}
+
+			protected function videoPhoneLarge_creationCompleteHandler(event:FlexEvent):void
+			{
+				videoPhoneLarge.setModel(_videoPhoneModel);
+			}
+			
+	
+			
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="LoginState"/>
+		<s:State name="LobbyState"/>
+		<s:State name="HeadquarterState"/>
+		<s:State name="PlayState"/>
+		<s:State name="LevelEditorState"/>
+	</s:states>
+	
+	<s:Rect id="menuBar" height="50"
+			left.HeadquarterState="0" right.HeadquarterState="0" top.HeadquarterState="-50"
+			left.LevelEditorState="0" right.LevelEditorState="0" top.LevelEditorState="-50"
+			left.LobbyState="0" right.LobbyState="0" top.LobbyState="0"
+			left.LoginState="0" right.LoginState="0" top.LoginState="-50"
+			left.PlayState="0" right.PlayState="0" top.PlayState="-50">
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry alpha="1.0" color="#333333" ratio="0"/>
+				<s:GradientEntry alpha="1" color="#000000" ratio="0.5"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	
+	<s:Rect id="main"
+			left.HeadquarterState="0" right.HeadquarterState="0" top.HeadquarterState="0"
+			bottom.HeadquarterState="0"
+			left.LevelEditorState="0" right.LevelEditorState="0" top.LevelEditorState="0"
+			bottom.LevelEditorState="0"
+			left.LobbyState="0" right.LobbyState="0" top.LobbyState="50" bottom.LobbyState="50"
+			left.LoginState="0" right.LoginState="0" top.LoginState="0" bottom.LoginState="0"
+			left.PlayState="0" right.PlayState="0" top.PlayState="0" bottom.PlayState="0"
+			alpha.PlayState="0">
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<!--<s:GradientEntry color="#333333" ratio="0"/>
+				<s:GradientEntry color="#000000" ratio="0.5"/>-->
+				
+				<s:GradientEntry color="#333333" ratio="0"/>
+				<s:GradientEntry color="#000000" ratio="0.5"/>
+				<s:GradientEntry color="#000000" ratio="0.7"/>
+				<s:GradientEntry color="#333333" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	
+	<s:Rect id="statusBar" left="0" right="0" bottom="0" height="50"
+			left.HeadquarterState="0" right.HeadquarterState="0" bottom.HeadquarterState="-50"
+			left.LevelEditorState="0" right.LevelEditorState="0" bottom.LevelEditorState="-50"
+			y.LobbyState="360"
+			left.LoginState="0" right.LoginState="0" bottom.LoginState="-50"
+			left.PlayState="0" right.PlayState="0" bottom.PlayState="-50">
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry alpha="1.0" color="#333333" ratio="0"/>
+				<s:GradientEntry alpha="1" color="#000000" ratio="0.5"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	
+	<s:HGroup height="50" gap="11" verticalAlign="middle"
+			  left.LevelEditorState="10">
+		<s:Button id="lobbyButton" label="Lobby" skinClass="components.skins.buttons.MenuButtom"/>
+		<s:Button id="headquarterButton" label="Headquarter" skinClass="components.skins.buttons.MenuButtom"/>
+		<s:Button id="levelEditorButton" label="Level Editor" skinClass="components.skins.buttons.MenuButtom" enabled="false"/>
+		<s:Button id="playButton" label="Play Game" skinClass="components.skins.buttons.MenuButtom"/>
+		<s:Button id="loggerButton" label="Logger" skinClass="components.skins.buttons.MenuButtom"/>
+	</s:HGroup>
+	
+
+	<login:Login includeIn="LoginState" horizontalCenter="0" verticalCenter="0">
+	</login:Login>
+	
+	<gameStateNavigation:HQStateView includeIn="HeadquarterState" />
+	<levelEditor:LevelEditor includeIn="LevelEditorState" left="20" right="20" top="60" bottom="20"/>
+	<videoPhone:VideoPhoneViewLarge id="videoPhoneLarge" includeIn="LobbyState" x="10" y="58"
+									creationComplete="videoPhoneLarge_creationCompleteHandler(event)"/>
+	<chat:Chat id="chat" includeIn="HeadquarterState, PlayState, LobbyState" x="307" y="133"
+			   x.HeadquarterState="501" y.HeadquarterState="403" width.HeadquarterState="277"
+			   x.PlayState="506" y.PlayState="457" width.PlayState="284" height.PlayState="135"/>
+	<gameStateNavigation:GameStateView includeIn="PlayState" />
+	
+	<s:transitions>
+	
+		<s:Transition fromState="LobbyState" interruptionBehavior="stop" toState="HeadquarterState">
+			<s:Parallel>
+				<s:Animate duration="500" target="{main}">
+					<s:SimpleMotionPath property="bottom"/>
+					<s:SimpleMotionPath property="top"/>
+				</s:Animate>
+				<s:Animate duration="500" target="{statusBar}">
+					<s:SimpleMotionPath property="x"/>
+					<s:SimpleMotionPath property="y"/>
+				</s:Animate>
+				<s:Animate duration="500" target="{menuBar}">
+					<s:SimpleMotionPath property="left"/>
+					<s:SimpleMotionPath property="right"/>
+					<s:SimpleMotionPath property="top"/>
+				</s:Animate>
+			</s:Parallel>
+		</s:Transition>
+		
+		<s:Transition fromState="HeadquarterState" interruptionBehavior="stop" toState="LobbyState">
+			<s:Parallel>
+				<s:Animate duration="500" target="{main}">
+					<s:SimpleMotionPath property="bottom"/>
+					<s:SimpleMotionPath property="top"/>
+				</s:Animate>
+				<s:Animate duration="500" target="{statusBar}">
+					<s:SimpleMotionPath property="x"/>
+					<s:SimpleMotionPath property="y"/>
+				</s:Animate>
+				<s:Animate duration="500" target="{menuBar}">
+					<s:SimpleMotionPath property="left"/>
+					<s:SimpleMotionPath property="right"/>
+					<s:SimpleMotionPath property="top"/>
+				</s:Animate>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+
+</s:Group>

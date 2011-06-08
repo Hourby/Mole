@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+	<fx:Metadata>[HostComponent("spark.components.List")]</fx:Metadata>
+
+	<fx:Script>
+		<![CDATA[
+
+		]]>
+	</fx:Script>
+
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:DataGroup id="dataGroup" x="0" y="0" width="173" height="417" clipAndEnableScrolling="true"
+				 itemRenderer="components.skins.videoSourceScrollPanel.VideoSourceRepeatedItem"
+				 width.normal="771" height.normal="143" >
+
+		<s:layout>
+			<s:HorizontalLayout/>
+		</s:layout>
+	</s:DataGroup>
+</s:Skin>

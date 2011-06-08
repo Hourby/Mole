@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:levelEditor="de.molehill.levelEditor.*"
+		 xmlns:code="http://code.google.com/p/flexlib/"
+		 width="800" contentBackgroundAlpha="1.0" 
+		 creationComplete="init(event)" >
+
+	<fx:Declarations>
+		<!-- Platzieren Sie nichtvisuelle Elemente (z. B. Dienste, Wertobjekte) hier -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import de.molehill.levelEditor.items.MapItem;
+			import de.molehill.levelEditor.items.UndergroundItem;
+			
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			
+			import spark.components.NavigatorContent;
+						
+			private var _currentItem:MapItem;
+			private var _currentWayCost:uint;
+			private var _startField:Boolean;
+			
+			private var _currentField:QuadField;
+			
+			private function init(e:FlexEvent):void {			
+				addEventListener(LevelEditorFieldEvent.ON_MOUSE_CLICK, onFieldClicked);
+				buildMapButton.addEventListener(MouseEvent.CLICK, onClickBuildMap);
+				itemAccordion.addEventListener(ItemEvent.SELCECT, setCurrentItem);
+				okButton.addEventListener(MouseEvent.CLICK, onBuildMap);			
+			}
+			
+			private function onBuildMap(e:MouseEvent):void {
+				levelTabNavigator.addChild(new NavigatorContent());
+				levelTabNavigator.selectedIndex = levelTabNavigator.numChildren - 1;
+
+				var navConent:NavigatorContent = levelTabNavigator.selectedChild as NavigatorContent; 
+				navConent.label = mapNameTextInput.text;
+				
+				var map:LevelEditorView = new LevelEditorView();
+				navConent.addElement(map);
+				map.buildMap(mapNameTextInput.text, uint(rowsTxt.text), uint(colsTxt.text));
+			}
+					
+			private function onClickBuildMap(e:MouseEvent):void {
+				var navConent:NavigatorContent = levelTabNavigator.selectedChild as NavigatorContent; 
+				var map:LevelEditorView = navConent.getElementAt(0) as LevelEditorView;
+				map.buildXML();
+				var texture:BitmapData = map.getUndergroundTexture();
+				saveFile(texture);
+			}
+
+			private function saveFile(texture:BitmapData):void {
+				var encoder:JPEGEncoder = new JPEGEncoder(80);
+				var rawBytes:ByteArray = encoder.encode(texture);
+				
+				var saveFileRef:FileReference = new FileReference();
+				saveFileRef.save(rawBytes);
+			}
+			
+			private function onFieldClicked(e:LevelEditorFieldEvent):void{
+				_currentField = e.field;
+				if(_currentItem is UndergroundItem){
+					setUnderground(_currentItem as UndergroundItem);
+				}
+			}
+
+			private function setUnderground(item:UndergroundItem):void {
+				var texture:BitmapData = item.texture.bitmapData;
+				_currentField.setUndergroundMaterial(texture);
+				_currentField.cost = item.undergroundType;
+			}
+			
+			private function setCurrentItem(e:ItemEvent):void {
+				_currentItem = e.item;
+			}
+		]]>
+	</fx:Script>
+
+
+	<s:Rect left="0" right="0" top="0" bottom="0">
+		<s:fill>
+			<s:SolidColor color="#000000"/>
+		</s:fill>
+	</s:Rect>
+	
+	<s:Group left="10" top="10" bottom="10" width="200">
+		
+		<s:Rect left="0" right="0" top="0" bottom="0">
+			<s:fill>
+				<s:SolidColor color="#000000"/>
+			</s:fill>
+		</s:Rect>
+		<mx:Button id="buildMapButton" x="110.5" y="182.75" label="Build"/>
+	
+		<mx:Form x="43.9" y="37.9" borderVisible="false" paddingBottom="0" paddingLeft="10" paddingTop="0">
+			<mx:FormItem label="Rows" width="120">
+				<s:TextInput id="rowsTxt" width="70" text="16"/>
+			</mx:FormItem>
+			<mx:FormItem label="Columns" width="120">
+				<s:TextInput id="colsTxt" width="70" text="16"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:Button id="okButton" x="120.5" y="9.75" label="Ok"/>
+		<mx:Text id="roadOutput" y="480" width="100%" height="30" color="#FFFFFF" text="Output"/>
+		<s:TextInput id="mapNameTextInput" x="10" y="10" width="103" text="Map Name"/>
+		<levelEditor:ItemAccordion id="itemAccordion" x="10" y="207" width="180" height="200"/>	
+	</s:Group>
+	<mx:TabNavigator id="levelTabNavigator" selectedTabTextStyleName="selectdTab" left="210" right="10" top="10" bottom="10"/>
+</s:Group>

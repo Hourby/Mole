@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="400" height="300">
+
+	<fx:Script>
+		<![CDATA[
+			protected function group1_mouseDownHandler(event:MouseEvent):void
+			{
+				startDrag();
+			}
+
+			protected function group1_mouseUpHandler(event:MouseEvent):void
+			{
+				stopDrag();
+			}
+
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				visible = false;
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:Group left="0" right="0" top="0" height="30" mouseDown="group1_mouseDownHandler(event)" mouseUp="group1_mouseUpHandler(event)">
+		<s:Rect left="0" right="0" top="0" bottom="0">
+			<s:fill>
+				<s:LinearGradient rotation="90">
+					<s:GradientEntry alpha="1.0" color="#333333" ratio="0"/>
+					<s:GradientEntry alpha="1" color="#000000" ratio="0.5"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:Line y="0" right="70" top="5" bottom="5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#333333" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:Button skinClass="components.skins.buttons.CloseButton" verticalCenter="0" right="13" click="button1_clickHandler(event)" />		
+	</s:Group>
+	<s:Rect left="0" right="0" top="30" bottom="0">
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry alpha="1.0" color="#333333" ratio="0"/>
+				<s:GradientEntry alpha="1" color="#000000" ratio="0.5"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	
+	<s:List id="logList" left="5" right="5" top="35" bottom="30"
+			contentBackgroundColor="#313131"/>
+	<s:Group left="5" right="5" bottom="5">
+		<s:DropDownList id="dropDown" left="0" width="130" borderColor="#313131"
+						contentBackgroundColor="#696969"/>
+		<s:TextInput id="inputFilter" left="135" right="0" bottom="0" borderColor="#313131"
+					 borderVisible="true" contentBackgroundColor="#313131"/>
+	</s:Group>
+	
+</s:Group>

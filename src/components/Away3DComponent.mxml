@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SpriteVisualElement xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   addedToStage="addedToStageHandler(event)"
+					   removedFromStage="removedFromStageHandler(event)"
+					   >
+
+	<fx:Declarations>
+		<!-- Platzieren Sie nichtvisuelle Elemente (z. B. Dienste, Wertobjekte) hier -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			private function addedToStageHandler(e:Event):void
+			{
+//				trace("Away3DComponent.addedToStageHandler(e)");
+//				addChild(new AlphaMapTest());
+			}
+			
+			private function removedFromStageHandler(e:Event):void
+			{
+				
+			}
+			
+		]]>
+	</fx:Script>
+</s:SpriteVisualElement>

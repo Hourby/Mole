@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:samplephp="services.samplephp.*"
+		 width="808" height="598">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.messaging.AbstractConsumer;
+			import mx.rpc.AsyncToken;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.ObjectUtil;
+			
+			protected function loginButton(event:MouseEvent):void
+			{
+				if (userName.text.length > 0 && 
+					password.text.length > 0)
+				{
+					
+					dispatchEvent(new LoginEvent(LoginEvent.LOGIN, userName.text, password.text));
+				
+					//loginActionResult3.token = samplePhp.loginAction(userName.text, password.text);
+					trace('Huhu');
+					
+				} else {
+					Alert.show('Es ist ein Fehler aufgetreten', 'Fehler');
+				}
+				
+			}
+			
+			protected function login_result(event:ResultEvent):void {
+				Alert.show(ObjectUtil.toString(event.result), "test");
+				
+			}
+			
+			protected function remoteObject_fault(event:FaultEvent):void {
+				Alert.show(event.fault.faultString+"\n\n" + event.fault.faultDetail, "Fehler");
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Platzieren Sie nichtvisuelle Elemente (z. B. Dienste, Wertobjekte) hier -->
+		<s:CallResponder id="loginActionResult"/>
+		<s:CallResponder id="loginActionResult3" />
+		<samplephp:SamplePhp id="samplePhp"
+							   fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail) + 'Hier ist ein Fehler'"
+							   showBusyCursor="true"/>
+	</fx:Declarations>
+	
+	
+	<s:Button id="button" x="254" y="297" label="Login" click="loginButton(event)"/>
+	<s:Button x="410" y="297" label="Register"/>
+	<s:Label  x="254" y="232" color="#FFFFFF" text="Passwort"/>
+	<s:Label  x="254" y="170" color="#FFFFFF" text="Benutzername"/>
+	<s:TextInput id="password" x="254" y="252"/>
+	<s:TextInput id="userName" x="254" y="190"/>
+</s:Group>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="280" height="420" creationComplete="group2_creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import away3d.cameras.Camera3D;
+			import away3d.cameras.lenses.OrthographicLens;
+			import away3d.cameras.lenses.OrthographicOffCenterLens;
+			import away3d.cameras.lenses.PerspectiveLens;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			private var _camera:Camera3D;
+
+			
+			protected function group1_mouseDownHandler(event:MouseEvent):void
+			{
+				startDrag();
+			}
+			
+			protected function group1_mouseUpHandler(event:MouseEvent):void
+			{
+				stopDrag();
+			}
+			
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				visible = false;
+			}
+			
+			public function set camera(camera:Camera3D):void {
+				_camera = camera;
+				update();
+			}
+			
+			protected function update():void {
+				xPosTxt.text = _camera.x + "";
+				yPosTxt.text = _camera.y + "";
+				zPosTxt.text = _camera.z + "";
+				xRotationTxt.text = _camera.rotationX + "";
+				yRotationTxt.text = _camera.rotationY + "";
+				zRotationTxt.text = _camera.rotationZ + "";
+			}
+			
+			protected function xPosTxt_enterHandler(event : FlexEvent) : void {
+				_camera.x = Number(event.target.text);
+			}
+			
+			protected function yPosTxt_enterHandler(event : FlexEvent) : void {
+				_camera.y = Number(event.target.text);				
+			}
+			
+			protected function zPosTxt_enterHandler(event : FlexEvent) : void {
+				_camera.z = Number(event.target.text);
+			}
+			
+			protected function xRotTxt_enterHandler(event : FlexEvent) : void {
+				_camera.rotationX = Number(event.target.text);
+			}
+			
+			protected function yRotTxt_enterHandler(event : FlexEvent) : void {
+				_camera.rotationY = Number(event.target.text);				
+			}
+			
+			protected function zRotTxt_enterHandler(event : FlexEvent) : void {
+				_camera.rotationZ = Number(event.target.text);				
+			}	
+			
+			protected function combobox1_changeHandler(event:IndexChangeEvent):void
+			{
+				switch(event.newIndex)
+				{
+					case 0:	_camera.lens = new PerspectiveLens(20);	break;
+					case 1:	_camera.lens = new OrthographicLens(3000); break;
+					case 2:	_camera.lens = new OrthographicOffCenterLens(450,1500,450,6000); break;
+				}	
+				update();
+			}
+			
+			protected function group2_creationCompleteHandler(event:FlexEvent):void
+			{
+				var list:ArrayList = new ArrayList();
+				list.addItem("PerspectiveLens");
+				list.addItem("OrthographicLens");
+				list.addItem("OrthographicOffCenterLens");
+				dropDown.dataProvider = list;
+				dropDown.selectedIndex = 0;
+			}
+			
+			protected function onClickUpdateHandler(event:MouseEvent):void
+			{
+				update();
+			}
+			
+			protected function onClickLookAtHandler(event:MouseEvent):void
+			{
+				_camera.lookAt(new Vector3D(Number(xLookAt.text), Number(yLookAt.text), Number(zLookAt.text)));
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Group left="0" right="0" top="0" height="30" mouseDown="group1_mouseDownHandler(event)" mouseUp="group1_mouseUpHandler(event)">
+		<s:Rect left="0" right="0" top="0" height="30">
+			<s:fill>
+				<s:SolidColor color="#000000"/>
+			</s:fill>
+		</s:Rect>
+		<s:Line y="0" right="70" top="5" bottom="5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#333333" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:Button skinClass="components.skins.buttons.CloseButton" verticalCenter="0" right="13" click="button1_clickHandler(event)" />		
+		<s:Label x="10" y="9" color="#D1D1D1" fontWeight="bold" text="CameraController"/>
+	</s:Group>
+	<s:Rect left="-3" right="3" top="25" bottom="5">
+		<s:fill>
+			<s:SolidColor color="#222222"/>
+		</s:fill>
+	</s:Rect>
+	<s:DropDownList id="dropDown" left="10" right="80" bottom="5" change="combobox1_changeHandler(event)"/>
+	<s:Form y="31" horizontalCenter="0">
+		<s:FormItem label="X-Position">
+			<s:TextInput id="xPosTxt" enter="xPosTxt_enterHandler(event)"/>
+		</s:FormItem>
+		<s:FormItem label="Y-Position">
+			<s:TextInput id="yPosTxt" enter="yPosTxt_enterHandler(event)"/>
+		</s:FormItem>
+		<s:FormItem label="Z-Position">
+			<s:TextInput id="zPosTxt" enter="zPosTxt_enterHandler(event)"/>
+		</s:FormItem>
+		<s:FormItem label="X-Rotation">
+			<s:TextInput id="xRotationTxt" enter="xRotTxt_enterHandler(event)"/>
+		</s:FormItem>
+		<s:FormItem label="Y-Rotation">
+			<s:TextInput id="yRotationTxt" enter="yRotTxt_enterHandler(event)"/>
+		</s:FormItem>
+		<s:FormItem label="Z-Rotation">
+			<s:TextInput id="zRotationTxt" enter="zRotTxt_enterHandler(event)"/>
+		</s:FormItem>
+	</s:Form>
+	<s:Button right="5" bottom="5" width="67" label="Update" click="onClickUpdateHandler(event)"/>
+	<s:HGroup y="346" left="8" right="8" height="40" gap="6" verticalAlign="middle">
+		<s:Label color="#F5F5F5" text="X"/>
+		<s:TextInput id="xLookAt" width="41"/>
+		<s:Label color="#F5F5F5" text="Y"/>
+		<s:TextInput id="yLookAt" width="41"/>
+		<s:Label color="#F5F5F5" text="Z"/>
+		<s:TextInput id="zLookAt" width="41"/>
+		<s:Button label="Look At" click="onClickLookAtHandler(event)"/>
+	</s:HGroup>
+
+</s:Group>

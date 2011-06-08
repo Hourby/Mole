@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:Rect height="25" width="100" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry alpha="0.0" color="#FFFFFF" color.down="#FF5800" color.over="#FF5800" ratio="0"/>
+				<s:GradientEntry alpha="1.0" color="#000000" ratio="0.13725490196078433"/>
+				<s:GradientEntry alpha="1.0" color="#000000" ratio="0.8392156862745098"/>
+				<s:GradientEntry alpha="0.0" color="#FFFFFF" color.down="#FF5800" color.over="#FF5800" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:RichText color="#999999" color.down="#FF5800" color.over="#FF5800" fontFamily="Arial" fontSize="12" fontSize.down="14" fontSize.over="14" id="richtext1" tabStops="S0" text="Action" x="34" x.down="31" x.over="31" y="8" y.down="7" y.over="7"/>
+	<s:transitions>
+		<s:Transition fromState="up" toState="over" autoReverse="true">
+			<s:Parallel>
+				<s:Parallel target="{richtext1}">
+					<s:Move duration="0" autoCenterTransform="true"/>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+</s:Skin>

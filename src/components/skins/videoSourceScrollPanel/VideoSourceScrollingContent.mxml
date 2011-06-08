@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:fx="http://ns.adobe.com/mxml/2009">
+	
+	<s:List x="0" y="0" width="1000"
+			skinClass="components.skins.videoSourceScrollPanel.VideoSourceDataList">
+		<s:ArrayCollection>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/P8281606.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/P8281606.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/P8281606.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/P8281606.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/P8281606.jpg')" text1="Title"/>
+			<fx:Object image1="@Embed('/assets/images/PICT4705.jpg')" text1="Title"/>
+		</s:ArrayCollection>
+	</s:List>
+	
+	<s:RichText text="Weitere&#xa;&#xa;Inhalte&#xa;&#xa;hier&#xa;&#xa;hinzufügen" x="781" y="0" fontFamily="Arial"/>
+</s:Group>

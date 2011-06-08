@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Mole</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>bin-debug</name>
+			<type>2</type>
+			<location>E:/xampp/htdocs/flashservices/Mole-debug</location>
+		</link>
+		<link>
+			<name>services/SamplePhp.php</name>
+			<type>1</type>
+			<location>E:/xampp/htdocs/flashservices/MoleHill-debug/services/SamplePhp.php</location>
+		</link>
+		<link>
+			<name>services/SamplePhp1_SamplePhp.php</name>
+			<type>1</type>
+			<location>E:/xampp/htdocs/flashservices/Mole-debug/services/SamplePhp.php</location>
+		</link>
+		<link>
+			<name>services/SamplePhp_SamplePhp.php</name>
+			<type>1</type>
+			<location>E:/xampp/htdocs/flashservices/MoleHill-debug/services/SamplePhp.php</location>
+		</link>
+	</linkedResources>
+</projectDescription>

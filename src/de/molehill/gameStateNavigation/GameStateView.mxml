@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:components="components.*"
+		 xmlns:user="de.molehill.data.user.*"
+		 xmlns:login="de.molehill.login.*"
+		 width="800" height="600" creationComplete="group1_creationCompleteHandler(event)">
+	
+	<fx:Declarations>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import de.molehill.game.Game;
+			
+			import mx.events.FlexEvent;
+
+				
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var game:Game = new Game(away.view);
+				camController.camera = away.view.camera;
+			}
+				
+		]]>
+	</fx:Script>
+	
+	<components:Away3DContainer id="away"/>	
+	<components:CameraDialog id="camController" x="0" y="40" />	
+	
+</s:Group>

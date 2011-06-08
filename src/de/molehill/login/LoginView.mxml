@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="320" height="158">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.IList;
+			protected function group1_mouseDownHandler(event:MouseEvent):void {
+				startDrag();
+			}
+
+			protected function group1_mouseUpHandler(event:MouseEvent):void {
+				stopDrag();
+			}
+
+
+			protected function button1_clickHandler(event:MouseEvent):void {
+				visible=false;
+			}						
+		]]>
+	</fx:Script>
+	
+	<s:Group left="0" right="0" top="0" height="30" mouseDown="group1_mouseDownHandler(event)" mouseUp="group1_mouseUpHandler(event)">
+		<s:Rect left="0" right="0" top="0" bottom="0">
+			<s:fill>
+				<s:LinearGradient rotation="90">
+					<s:GradientEntry alpha="1.0" color="#333333" ratio="0"/>
+					<s:GradientEntry alpha="1" color="#000000" ratio="0.5"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:Button skinClass="components.skins.buttons.CloseButton" verticalCenter="0" right="13" click="button1_clickHandler(event)" />		
+	</s:Group>
+	<s:Rect left="0" right="0" top="30" bottom="0">
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry alpha="1.0" color="#333333" ratio="0"/>
+				<s:GradientEntry alpha="1" color="#000000" ratio="0.5"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:TextInput id="textInputPW" x="147" y="77"/>
+	<s:Label x="65" y="113" text="Beschriftung"/>
+	<s:TextInput id="textInputName" x="147" y="42"/>
+	<s:Label x="49" y="49" color="#E5E5E5" fontSize="16" text="Name"/>
+	<s:Label x="49" y="80" color="#E5E5E5" fontSize="16" text="Password"/>
+	<s:Button id="loginButton" x="168" y="113" label="Login"/>
+</s:Group>

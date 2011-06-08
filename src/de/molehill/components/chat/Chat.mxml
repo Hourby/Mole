@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx">
+	<s:layout>
+		<s:VerticalLayout horizontalAlign="center"/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- Platzieren Sie nichtvisuelle Elemente (z. B. Dienste, Wertobjekte) hier -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;		
+
+			public function receiveMessage(message:String):void{
+				chatOutput.appendText(message + "\n");
+			}
+			
+			private function sendMessage(message:String):void{
+				dispatchEvent(new ChatEvent(ChatEvent.MESSAGE, message));
+				chatOutput.appendText("Ich : " +  message +"\n" );
+			}	
+			
+			private function sendMessageHandler(e:Event) : void {
+				if(messageTxt.text != "") {
+					sendMessage(messageTxt.text);
+					messageTxt.text = "";
+				}
+			}
+
+			
+		]]>
+	</fx:Script>
+	<mx:Spacer/>
+		<s:TextArea width="95%" height="90%" id="chatOutput" editable="false" contentBackgroundColor="#FFFFFF"/>	
+	<s:HGroup x="10" y="10" width="95%">	
+		<s:TextInput x="10" y="468" width="100%" id="messageTxt" contentBackgroundColor="#FFFFFF" enter="sendMessageHandler(event)"/>
+		<s:Button x="320" y="468" label="send" width="50" id="sendBtn" click="sendMessageHandler(event)"/>
+	</s:HGroup>
+</s:BorderContainer>
