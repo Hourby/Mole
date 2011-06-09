@@ -21,7 +21,7 @@
 				{
 					
 					dispatchEvent(new LoginEvent(LoginEvent.LOGIN, userName.text, password.text));
-					getItemResult.token = samplePhp.getItem(userName.text, password.text);
+//					getItemResult.token = samplePhp.getItem(userName.text, password.text);
 					Alert.show('Es ist ein Fehler aufgetreten' , 'Fehler');
 					
 				} else {
