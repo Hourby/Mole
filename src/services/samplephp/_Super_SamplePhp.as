@@ -51,6 +51,9 @@ internal class _Super_SamplePhp extends com.adobe.fiber.services.wrapper.RemoteO
         operation = new mx.rpc.remoting.Operation(null, "getItems_paged");
          operation.resultType = Object;
         operations["getItems_paged"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "loginAction");
+         operation.resultType = Object;
+        operations["loginAction"] = operation;
 
         _serviceControl.operations = operations;
         _serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
@@ -84,7 +87,7 @@ internal class _Super_SamplePhp extends com.adobe.fiber.services.wrapper.RemoteO
     public function getAllItems() : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getAllItems");
-        var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
      
@@ -99,10 +102,10 @@ internal class _Super_SamplePhp extends com.adobe.fiber.services.wrapper.RemoteO
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function getItem(itemID:Object) : mx.rpc.AsyncToken
+    public function getItem(name:Object, password:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getItem");
-        var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(itemID) ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(name,password) ;
         return _internal_token;
     }
      
@@ -117,10 +120,10 @@ internal class _Super_SamplePhp extends com.adobe.fiber.services.wrapper.RemoteO
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function createItem(item:Object) : mx.rpc.AsyncToken
+    public function createItem(user_name:Object, password:Object, email:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("createItem");
-        var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(item) ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(user_name,password,email) ;
         return _internal_token;
     }
      
@@ -138,7 +141,7 @@ internal class _Super_SamplePhp extends com.adobe.fiber.services.wrapper.RemoteO
     public function updateItem(item:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("updateItem");
-        var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(item) ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(item) ;
         return _internal_token;
     }
      
@@ -156,7 +159,7 @@ internal class _Super_SamplePhp extends com.adobe.fiber.services.wrapper.RemoteO
     public function deleteItem(itemID:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteItem");
-        var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(itemID) ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(itemID) ;
         return _internal_token;
     }
      
@@ -174,7 +177,7 @@ internal class _Super_SamplePhp extends com.adobe.fiber.services.wrapper.RemoteO
     public function count() : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("count");
-        var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
      
@@ -192,7 +195,25 @@ internal class _Super_SamplePhp extends com.adobe.fiber.services.wrapper.RemoteO
     public function getItems_paged(startIndex:Object, numItems:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getItems_paged");
-        var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(startIndex,numItems) ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(startIndex,numItems) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'loginAction' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function loginAction(userName:Object, password:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("loginAction");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(userName,password) ;
         return _internal_token;
     }
      
