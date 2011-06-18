@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="800" height="600" contentBackgroundColor="#000000">
+	<fx:Script>
+		<![CDATA[
+			protected function registerButton(event:MouseEvent):void
+			{
+				if (userName.text.length > 0 &&
+					password.text.length > 0 &&
+					passwordRepeat.text.length > 0 &&
+					email.text.length > 0  ) 
+				{
+					if (password.text  == passwordRepeat.text) {
+						
+					} else {
+						repeatError.visible = true;
+					}
+					
+				} else {
+					currentState = "not Registerd";
+				}
+					
+				
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Platzieren Sie nichtvisuelle Elemente (z. B. Dienste, Wertobjekte) hier -->
+	</fx:Declarations>
+	
+	
+	
+	
+		<s:Label x="377" y="187" backgroundColor="#FFFFFF" color="#FFFFFF" text="Email"/>
+		<s:Label x="376" y="266" backgroundColor="#FFFFFF" color="#FFFFFF" text="Passwort"/>
+		<s:Label x="374" y="124" backgroundColor="#FFFFFF" color="#FFFFFF" text="Benutzername"/>
+		<s:Label x="378" y="338" backgroundColor="#FFFFFF" color="#FFFFFF" text="Passwort Wiederholung"/>
+		<s:Label id="repeatError"  x="400" y="338" color="#000000" text="Die Eingaben müssen gleich sein." visible="false"/>
+		
+		<s:TextInput id="userName" x="378" y="286" contentBackgroundColor="#FFFFFF"/>
+		<s:TextInput id="email" x="378" y="211" contentBackgroundColor="#FFFFFF"/>
+		<s:TextInput id="password" x="378" y="358" contentBackgroundColor="#FFFFFF"/>
+		<s:TextInput id="passwordRepeat" x="377" y="139" contentBackgroundColor="#FFFFFF"/>
+	
+		<s:Button x="378" y="425" label="Registrieren" click="registerButton(event)"/>
+</s:Group>
