@@ -11,6 +11,7 @@
 	<fx:Script>
 		<![CDATA[
 			import de.molehill.levelEditor.items.MapItem;
+			import de.molehill.levelEditor.items.UndergroundType;
 			
 			import mx.events.FlexEvent;
 			
@@ -19,12 +20,13 @@
 			}
 			
 			private function initTabs():void {
-				addChild(new ItemContainer("Terrain",0,4));
-				addChild(new ItemContainer("Straßen",4,7));
+				addChild(new UndergroundItemContainer("Terrain",UndergroundType.GRASS,0,4));
+				addChild(new UndergroundItemContainer("Straßen",UndergroundType.STREET,4,7));
+				addChild(new ItemContainer(ItemType.BUILDING, "Häuser",UndergroundType.GRASS,0,4));
+				addChild(new ItemContainer(ItemType.ENTRY_TARGET, "Start & Ziel",UndergroundType.STREET,11,2));
 			}
 						
 		]]>
 	</fx:Script>
-	
-	<s:NavigatorContent id="buildingTab" width="100%" height="100%" label="Häuser"/>
+
 </mx:Accordion>

@@ -6,44 +6,92 @@ package de.molehill.game.map
 	
 	public class MapModel
 	{
-		private var _rows:uint;
-		private var _columns:uint;
+//		private var _rows:uint;
+//		private var _columns:uint;
+		private var _size:uint;
 		
 		private var _fields : Vector.<Vector.<Field>>;
 		private var _closedFields:Vector.<Field>;
 		private var openFields:Vector.<Field> = new Vector.<Field>();
 
-		public function MapModel(rows : uint, columns : uint) {
-			_rows = rows;
-			_columns = columns;
+		public function MapModel(xml:XML) {
+			
+			
+//			_rows = xml.;
+//			_columns = columns;
 			_closedFields = new Vector.<Field>();
-			initialize();
+
+			//getAttributeValuesByName(xml,"isFree");
+
+			_size = uint (getElement(xml, "mapSize"));
+			var author:String = String( getElement(xml, "author"));
+			var gameName:String = String( getElement(xml, "gameName"));
+			var fields:XMLList = xml..field;
+			initialize(fields);
+		}
+		
+		private function getAttributeValuesByName(xml:XML, attributeName:String):XMLList {
+			var size:uint;
+
+			var fields:XMLList = xml..field;
+			
+			for each (var attribute:XML in fields.attribute(attributeName)) {
+				trace(attribute.name() + " := " + attribute);
+			}
+			return fields;
 		}
 
-		private function initialize() : void {
-			_fields = new Vector.<Vector.<Field>>(_rows);
-			for (var n : uint = 0; n < _rows; n++) {
-				_fields[n] = new Vector.<Field>(_columns);
+		private function getElement(xml:XML, nodeName:String = "*"):XMLList {
+			var element:XMLList = xml.elements(nodeName);
+			return element;
+		}
+		
+		private function initialize(xmlList:XMLList) : void {
+			_fields = new Vector.<Vector.<Field>>(_size);
+			for (var j : uint = 0; j < _size; j++) {
+				_fields[j] = new Vector.<Field>(_size);
 			}
-
-			for (var j : uint = 0; j < _rows; j++) {
-				for (var i : uint = 0; i < _columns; i++) {
-					_fields[j][i] = new Field(new Point(j, i), 2, true, true);
-				}
+			
+			
+				
+			var item:XML;
+			for each(item in xmlList){
+				var x:uint = item.attribute("xpos");
+				var y:uint = item.attribute("ypos");
+				var type:uint = item.attribute("type");
+				var isFree:Boolean = item.attribute("isFree");
+				var isEntryPoint:Boolean = item.attribute("isEntryPoint");
+				var isTargetPoint:Boolean = item.attribute("isTargetPoint");
+				_fields[x][y] = new Field(new Point(x, y), type, isFree);
 			}
+			//trace("MapModel.initialize(xmlList)" + xmlList);
 		}
 		
 		public function getCurrentReachableFields():Vector.<Field> {
 			return _closedFields;
+		}
+		
+		public function clearCurrentReachableFields():void {
+			_closedFields = new Vector.<Field>();
 		}
 
 		public function handleAddUnit(position : Point) : void {
 			_fields[position.x][position.y].isFree = false;
 		}
 		
-		public function handleMoveUnit(oldPosition:Point, newPosition:Point):void {
+		public function handleMoveUnit(oldPosition:Point, newPosition:Point):Vector.<Point> {
 			_fields[newPosition.x][newPosition.y].isFree = false;
 			_fields[oldPosition.x][oldPosition.y].isFree = true;
+			var positions:Vector.<Point> = new Vector.<Point>();
+			var field:Field = _fields[newPosition.x][newPosition.y];
+			while(oldPosition.x != newPosition.x || oldPosition.y != newPosition.y ){
+				positions.push(field.position);
+				field = field.parent;
+				newPosition = field.position;
+			}
+			positions.push(field.position);
+			positions.reverse();
+			return positions;
 		}
 		
 		public function getField(position:Point):Field{
@@ -67,7 +115,7 @@ package de.molehill.game.map
 					chckField = reachableNeighbours[i];
 					openFields.push(chckField);
 					chckField.parent = currentField;
-					chckField.remainedActionPoint = actionPoints - chckField.wayCost;
+					chckField.remainedActionPoint = actionPoints - chckField.type;
 				}
 			}
 			while(openFields.length > 0){
@@ -78,10 +126,10 @@ package de.molehill.game.map
 					if(isNewField(chckField)){
 						openFields.push(chckField);
 						chckField.parent = currentField;
-						chckField.remainedActionPoint = currentField.remainedActionPoint - chckField.wayCost;
+						chckField.remainedActionPoint = currentField.remainedActionPoint - chckField.type;
 					} else {								
-						if(currentField.remainedActionPoint - chckField.wayCost > chckField.remainedActionPoint)	{
-							chckField.remainedActionPoint = currentField.remainedActionPoint - chckField.wayCost;
+						if(currentField.remainedActionPoint - chckField.type > chckField.remainedActionPoint)	{
+							chckField.remainedActionPoint = currentField.remainedActionPoint - chckField.type;
 							chckField.parent = currentField;
 							if (isInClosedList(chckField)){
 								var index:int = _closedFields.indexOf(chckField);
@@ -117,7 +165,7 @@ package de.molehill.game.map
 			{
 				if(isPointInMap(neighboursPoints[i])){
 					chckField = _fields[neighboursPoints[i].x][neighboursPoints[i].y];
-					if(chckField.isFree &&  remainingActionPoints >= chckField.wayCost){
+					if(chckField.isFree &&  remainingActionPoints >= chckField.type){
 						neighboursFields.push(chckField);
 					}
 				}
@@ -126,7 +174,7 @@ package de.molehill.game.map
 		}
 		
 		private function isPointInMap(position:Point):Boolean {
-			return 0 <= position.x && 0 <= position.y && position.x < _rows && position.y < _columns;
+			return 0 <= position.x && 0 <= position.y && position.x < _size && position.y < _size;
 		}
 		
 		private	function getNeighborPoints(position:Point): Vector.<Point> {
@@ -138,13 +186,19 @@ package de.molehill.game.map
 			return neighbors;
 		}
 
-		public function get rows() : uint {
-			return _rows;
+		public function get size():uint
+		{
+			return _size;
 		}
 
-		public function get columns() : uint {
-			return _columns;
-		}
+
+//		public function get rows() : uint {
+//			return _rows;
+//		}
+//
+//		public function get columns() : uint {
+//			return _columns;
+//		}
 
 	}
 }

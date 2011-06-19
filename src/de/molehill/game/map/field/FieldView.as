@@ -10,17 +10,13 @@ package de.molehill.game.map.field {
 		
 		public function FieldView() {
 			mouseEnabled = true;
-		}
-
-		public function render() : void {
+			pitch(90);
+			width = 500;
+			height = 500;
 			var bmpData : BitmapData = new BitmapData(128, 128, false, 0x000000);
 			bmpData.fillRect(new Rectangle(6, 6, 500, 500), 0xFF0000);
 			material = new BitmapMaterial(bmpData);
 			(material as BitmapMaterial).alpha = 0.5;
-			width = 500;
-			height = 500;
-			pitch(90);
 		}
-
 	}
 }

@@ -1,6 +1,6 @@
 package de.molehill.xml {
 
-	public final class XMLCreator {
+	public final class XMLCreatorSample {
 		
 		public static function createUserXML(userName:String, userMail:String, userAge:uint):XML {
 			var xmlAsString:String = "<user>";

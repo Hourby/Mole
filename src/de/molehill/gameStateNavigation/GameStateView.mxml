@@ -13,16 +13,39 @@
 	<fx:Script>
 		<![CDATA[
 			import de.molehill.game.Game;
+			import de.molehill.util.GameAssetLoader;
 			
 			import mx.events.FlexEvent;
 
 				
-			protected function group1_creationCompleteHandler(event:FlexEvent):void
-			{
-				var game:Game = new Game(away.view);
+			protected function group1_creationCompleteHandler(event:FlexEvent):void {
+				GameAssetLoader.instance.loadAssets();
+				GameAssetLoader.instance.addEventListener("GAME_ASSETS_LOADED", onAssetsLoaded);
+			}
+			
+			protected function onAssetsLoaded(event : Event) : void {
+				loadXML("level.xml");
+			}
+			
+			private function loadXML(url:String):void {
+				url = "assets/xml/" + url;
+				var request:URLRequest = new URLRequest(url);
+				var loader:URLLoader = new URLLoader();
+				loader.addEventListener(Event.COMPLETE, completeHandler);
+				loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+				loader.load(request);
+			}
+			
+			private function completeHandler(event:Event):void {
+				var loader:URLLoader = URLLoader(event.target);
+				var xml:XML = XML(loader.data);
+				var game:Game = new Game(away.view, xml );
 				camController.camera = away.view.camera;
 			}
-				
+						
+			private function ioErrorHandler(event:IOErrorEvent):void {
+				trace("Unable to load xml");
+			}	
 		]]>
 	</fx:Script>
 	

@@ -2,6 +2,7 @@ package de.molehill.levelEditor
 {
 	import components.ScrollableGroup;
 	
+	import de.molehill.game.map.field.Field;
 	import de.molehill.levelEditor.items.UndergroundType;
 	
 	import flash.display.Bitmap;
@@ -52,7 +53,7 @@ package de.molehill.levelEditor
 					field.addEventListener(LevelEditorFieldEvent.ON_MOUSE_CLICK, onFieldClicked);
 					_fields[j][i]= field;
 					field.setUndergroundMaterial(_textureManager.getTextureByID(0).bitmapData);
-					field.cost = UndergroundType.WOOD;
+					field.type = UndergroundType.WOOD;
 					view = field.view;
 					view.width = _tileSize;
 					view.height = _tileSize;
@@ -72,14 +73,14 @@ package de.molehill.levelEditor
 			}
 		}
 		
-		public function buildXML():XML {
+		public function getFields():Vector.<Field> {
+			var fields:Vector.<Field> = new Vector.<Field>();
 			for (var j:uint=0; j < _rows; j++) {
 				for (var i:uint=0; i < _columns; i++) {
-					var field:QuadField = _fields[j][i];
-					trace("cost :" + field.cost);
+					fields.push(_fields[j][i].field);
 				}
 			}
-			return null;
+			return fields;
 		}
 		
 		public function getUndergroundTexture():BitmapData {

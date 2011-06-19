@@ -87,7 +87,7 @@ package de.molehill.game.units
 		
 		public function initMesh(lights:Array) : void
 		{					
-			var asset:BitmapDataAsset  = AssetLibrary.getAsset(Assets.TANK_TEXTURE) as BitmapDataAsset;
+			var asset:BitmapDataAsset  = AssetLibrary.getAsset(Assets.TANK_TEXTURE_BLUE) as BitmapDataAsset;
 			var normal:BitmapDataAsset = AssetLibrary.getAsset(Assets.TANK_NORMAL) as BitmapDataAsset;
 			
 			
@@ -115,6 +115,7 @@ package de.molehill.game.units
 			mesh.addEventListener(MouseEvent3D.MOUSE_OVER, onMouseOver);
 			mesh.addEventListener(MouseEvent3D.CLICK, onMouseClick);
 			mesh.mouseEnabled = true;
+			mesh.rotationY = 180;
 			//mesh.castsShadows = true;
 			addChild(mesh);
 		}		

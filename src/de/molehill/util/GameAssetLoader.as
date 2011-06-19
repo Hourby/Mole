@@ -38,7 +38,8 @@ package de.molehill.util
 //			_assets.push( Vector.<String>(["assets/gameObjects/tanks/tank04_NM.jpg"                  ,Assets.TANK_NORMAL]));
 			
 			_assets.push( Vector.<String>(["assets/gameObjects/tanks/TankNeu01.obj"                  ,Assets.TANK_MESH]));
-			_assets.push( Vector.<String>(["assets/gameObjects/tanks/TankNeu01.jpg",Assets.TANK_TEXTURE]));
+			_assets.push( Vector.<String>(["assets/gameObjects/tanks/tankBlue.jpg"					,Assets.TANK_TEXTURE_BLUE]));
+			_assets.push( Vector.<String>(["assets/gameObjects/tanks/tankBlue.jpg"					,Assets.TANK_TEXTURE_BLUE]));
 			_assets.push( Vector.<String>(["assets/gameObjects/tanks/tank04_NM.jpg"                  ,Assets.TANK_NORMAL]));
 			
 			_assets.push( Vector.<String>(["assets/gameObjects/buildings/Haus_1 _01.obj"                  ,Assets.BUILDING_MESH]));

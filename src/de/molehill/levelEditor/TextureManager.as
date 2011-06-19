@@ -38,6 +38,10 @@ package de.molehill.levelEditor {
 
 		private function init():void {
 			_texturePaths = new Vector.<String>();
+			
+			_texturePaths.push("TargetField_128.png");
+			_texturePaths.push("Startfield_128.png");
+			
 			_texturePaths.push("Street_Cross_128.png");
 			_texturePaths.push("Street_Curve_128_4.png");
 			_texturePaths.push("Street_Curve_128_3.png");
@@ -45,11 +49,15 @@ package de.molehill.levelEditor {
 			_texturePaths.push("Street_Curve_128_1.png");
 			_texturePaths.push("Street_Vertical_128.png");
 			_texturePaths.push("Street_Horizontal_128.png");
+			
 			_texturePaths.push("UndergroundGrass.png");
 			_texturePaths.push("UndergroundGrassAndSand.png");
 			_texturePaths.push("UndergroundSandGrass01.png");
 			_texturePaths.push("UndergroundSandGrass02.png");
 			
+			
+			_texturePaths.push("TargetField_64.png");
+			_texturePaths.push("Startfield_64.png");
 			
 			_texturePaths.push("Street_Cross_64.png");
 			_texturePaths.push("Street_Curve_64_4.png");
@@ -58,6 +66,7 @@ package de.molehill.levelEditor {
 			_texturePaths.push("Street_Curve_64_1.png");
 			_texturePaths.push("Street_Vertical_64.png");
 			_texturePaths.push("Street_Horizontal_64.png");
+						
 			_texturePaths.push("UndergroundGrass_64.png");
 			_texturePaths.push("UndergroundGrassAndSand_64.png");
 			_texturePaths.push("UndergroundSandGrass01_64.png");

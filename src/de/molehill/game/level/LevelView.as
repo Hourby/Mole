@@ -27,7 +27,7 @@ package de.molehill.game.level {
 		
 		public function showFields(fields : Vector.<Field>) : void {
 			for each (var field : Field in fields) {
-				field.view.render();
+
 				addChild(field.view);
 				field.view.x = field.position.x * field.view.width;
 				field.view.z = field.position.y * field.view.height;

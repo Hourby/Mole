@@ -6,18 +6,18 @@ package de.molehill.game.map.field {
 	public class FieldModel {
 		
 		private var _position : Point;
-		private var _wayCost : uint;
+		private var _type : uint;
 		private var _isFree : Boolean;
-		private var _doHideView : Boolean;
 		private var _parent:Field;
 		private var _remainedActionPoints	:uint;	
+		private var _isEntryPoint:Boolean;
+		private var _isTargetPoint:Boolean;
 		
 
-		public function FieldModel(position:Point, wayCost:uint, isFree:Boolean, doHideView:Boolean) {
+		public function FieldModel(position:Point, type:uint, isFree:Boolean) {
 			_position = position;
-			_wayCost = wayCost;
+			_type = type;
 			_isFree = isFree;
-			_doHideView = doHideView;
 		}
 
 		public function get position() : Point { return _position; }
@@ -25,19 +25,14 @@ package de.molehill.game.map.field {
 			_position = value;
 		}
 
-		public function get wayCost() : uint { return _wayCost; }
-		public function set wayCost(value : uint) : void {
-			_wayCost = value;
+		public function get type() : uint { return _type; }
+		public function set type(value : uint) : void {
+			_type = value;
 		}
 
 		public function get isFree() : Boolean { return _isFree;}
 		public function set isFree(value : Boolean) : void {
 			_isFree = value;
-		}
-
-		public function get doHideView() : Boolean { return _doHideView; }
-		public function set doHideView(value : Boolean) : void {
-			_doHideView = value;
 		}
 		
 		public function get parent():Field { return _parent; }
@@ -50,5 +45,14 @@ package de.molehill.game.map.field {
 			_remainedActionPoints = value;
 		}
 
+		public function get isEntryPoint():Boolean { return _isEntryPoint; }
+		public function set isEntryPoint(value:Boolean):void {
+			_isEntryPoint = value;
+		}
+
+		public function get isTargetPoint():Boolean { return _isTargetPoint; }
+		public function set isTargetPoint(value:Boolean):void {
+			_isTargetPoint = value;
+		}
 	}
 }

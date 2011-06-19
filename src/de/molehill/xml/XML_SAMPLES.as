@@ -29,7 +29,7 @@ package de.molehill.xml {
 		}
 
 		public function creatingXML():void {
-			trace(XMLCreator.RSS);
+			trace(XMLCreatorSample.RSS);
 			//trace ( XMLCreator.createUserXML( "netTrek", "us@netTrek.de", 33 ) );
 		/*
 		var userObj : Object = new Object ();
@@ -44,30 +44,30 @@ package de.molehill.xml {
 		}
 
 		public function showElementsList(nodeName:String = "*"):void {
-			for each (var element:XML in XMLCreator.RSS.channel.elements(nodeName))
+			for each (var element:XML in XMLCreatorSample.RSS.channel.elements(nodeName))
 				trace(element);
 		}
 		public function showAllLinks():void {
-			var xmlList:XMLList = XMLCreator.RSS..link;
+			var xmlList:XMLList = XMLCreatorSample.RSS..link;
 			trace(xmlList);
 			for each (var element:XML in xmlList)
 				trace(element);
 		}
 		public function showItemInformations():void {
-			var items:XMLList = XMLCreator.RSS..item;
+			var items:XMLList = XMLCreatorSample.RSS..item;
 			trace("All Items := " + items.length());
 			for each (var node:XML in items.elements()) {
 				trace(node.name() + " := " + node);
 			}
 		}
 		public function showItemInformationsByID(id:uint = 0):void {
-			var item:XML = XMLCreator.RSS.channel.item[id];
+			var item:XML = XMLCreatorSample.RSS.channel.item[id];
 			for each (var node:XML in item.elements()) {
 				trace(node.name() + " := " + node);
 			}
 		}
 		public function showAttributeValuesByName(attributeName:String):void {
-			var xml:XML = XMLCreator.createUserListWithAttributes();
+			var xml:XML = XMLCreatorSample.createUserListWithAttributes();
 			var users:XMLList = xml..user;
 			trace(users);
 			for each (var attribute:XML in users.attribute(attributeName)) {
@@ -75,7 +75,7 @@ package de.molehill.xml {
 			}
 		}
 		public function showTagsWithSpecAttribute(attributeName:String, value:*):void {
-			var xml:XML = XMLCreator.createUserListWithAttributes();
+			var xml:XML = XMLCreatorSample.createUserListWithAttributes();
 			var users:XMLList = xml..user;
 			for each (var node:XML in users) {
 				if (node.@[attributeName] == value)
@@ -87,7 +87,7 @@ package de.molehill.xml {
 			var loader:URLLoader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.TEXT;
 			var request:URLRequest = new URLRequest("rssFeed.xml");
-			request.data = XMLCreator.createUserList();
+			request.data = XMLCreatorSample.createUserList();
 			request.method = URLRequestMethod.POST;
 			var eventListener:Function = function(e:Event):void {
 				trace(e);

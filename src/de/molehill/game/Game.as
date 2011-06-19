@@ -2,8 +2,10 @@ package de.molehill.game {
 	
 	import away3d.cameras.lenses.PerspectiveLens;
 	import away3d.containers.View3D;
+	import away3d.library.AssetLibrary;
 	import away3d.lights.PointLight;
 	
+	import de.molehill.data.Assets;
 	import de.molehill.game.level.Level;
 	import de.molehill.game.units.UnitEvent;
 	import de.molehill.temp.FlightController;
@@ -35,33 +37,24 @@ package de.molehill.game {
 		
 		private var velocity:Vector3D;
 
-		public function Game(view : View3D) {
-			GameAssetLoader.instance.loadAssets();
-			GameAssetLoader.instance.addEventListener("GAME_ASSETS_LOADED", onAssetsLoaded);
+		public function Game(view : View3D, xml:XML) {
+			
 
 			_view = view;
 			_view.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-
-			_level = new Level();
-			//_level.addEventListener(UnitEvent.MOUSE_OVER_UNIT, onMouseOverUnit);
-			_level.addEventListener(UnitEvent.UNIT_SELCECTED, onUnitSelected);
-			view.scene.addChild(_level.view);
-
 			setupCamera();
 			setupLight();
-			
-			
-
+			_level = new Level(xml);
+			//_level.addEventListener(UnitEvent.MOUSE_OVER_UNIT, onMouseOverUnit);
+			_level.addEventListener(UnitEvent.UNIT_SELCECTED, onUnitSelected);
+			_view.scene.addChild(_level.view);
+			_level.initialize(_lights);
 		}
 		
 		protected function onUnitSelected(event:UnitEvent):void
 		{
 			_cameraTarget = event.position;
 			fade(20,40);			
-		}
-		
-		protected function onAssetsLoaded(event : Event) : void {
-			_level.initialize(_lights);
 		}
 		
 		protected function onMouseOverUnit(event : UnitEvent) : void {

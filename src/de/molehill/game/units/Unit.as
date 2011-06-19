@@ -44,7 +44,7 @@ package de.molehill.game.units
 			_controller.handleAddToField(position);
 		}
 		
-		public function moveTo(position:Point):void {
+		public function moveToField(position:Point):void {
 			_controller.handleMoveTo(position);
 		}
 		
@@ -56,10 +56,7 @@ package de.molehill.game.units
 			
 		}
 		
-		public function get position():Point {
-			return _model.position;
-		}
-		
+		public function get position():Point { return _model.position; }
 		public function set position(pos:Point):void {
 			_model.position = pos;
 		}

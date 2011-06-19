@@ -13,8 +13,11 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import de.molehill.levelEditor.items.EntryTargetItem;
+			import de.molehill.levelEditor.items.EntryTargtType;
 			import de.molehill.levelEditor.items.MapItem;
 			import de.molehill.levelEditor.items.UndergroundItem;
+			import de.molehill.xml.XMLHelper;
 			
 			import mx.events.FlexEvent;
 			import mx.graphics.codec.JPEGEncoder;
@@ -29,7 +32,8 @@
 			
 			private function init(e:FlexEvent):void {			
 				addEventListener(LevelEditorFieldEvent.ON_MOUSE_CLICK, onFieldClicked);
-				buildMapButton.addEventListener(MouseEvent.CLICK, onClickBuildMap);
+				buildXMLButton.addEventListener(MouseEvent.CLICK, onClickBuildXML);
+				buildTextureButton.addEventListener(MouseEvent.CLICK, onClickBuildTexture);
 				itemAccordion.addEventListener(ItemEvent.SELCECT, setCurrentItem);
 				okButton.addEventListener(MouseEvent.CLICK, onBuildMap);			
 			}
@@ -45,13 +49,18 @@
 				navConent.addElement(map);
 				map.buildMap(mapNameTextInput.text, uint(rowsTxt.text), uint(colsTxt.text));
 			}
-					
-			private function onClickBuildMap(e:MouseEvent):void {
+			
+			private function onClickBuildTexture(e:MouseEvent):void {
 				var navConent:NavigatorContent = levelTabNavigator.selectedChild as NavigatorContent; 
 				var map:LevelEditorView = navConent.getElementAt(0) as LevelEditorView;
-				map.buildXML();
 				var texture:BitmapData = map.getUndergroundTexture();
 				saveFile(texture);
+			}
+					
+			private function onClickBuildXML(e:MouseEvent):void {
+				var navConent:NavigatorContent = levelTabNavigator.selectedChild as NavigatorContent; 
+				var map:LevelEditorView = navConent.getElementAt(0) as LevelEditorView;
+				XMLHelper.createMap("Patrick", "Map;-)",16,map.getFields());
 			}
 
 			private function saveFile(texture:BitmapData):void {
@@ -66,13 +75,29 @@
 				_currentField = e.field;
 				if(_currentItem is UndergroundItem){
 					setUnderground(_currentItem as UndergroundItem);
+				} else if(_currentItem is EntryTargetItem){
+					setEntryTarget(_currentItem as EntryTargetItem);
 				}
 			}
 
 			private function setUnderground(item:UndergroundItem):void {
 				var texture:BitmapData = item.texture.bitmapData;
 				_currentField.setUndergroundMaterial(texture);
-				_currentField.cost = item.undergroundType;
+				_currentField.type = item.undergroundType;
+			}
+			
+			private function setEntryTarget(item:EntryTargetItem):void {
+				var texture:BitmapData = item.texture.bitmapData;
+				_currentField.setUndergroundMaterial(texture);
+				if(item.type == EntryTargtType.ENTRY){
+					_currentField.isEntryPoint = true;
+					_currentField.isTargetPoint = false;
+				}
+				else if(item.type == EntryTargtType.TARGET){
+					_currentField.isTargetPoint = true;
+					_currentField.isEntryPoint = false;
+				}
+					
 			}
 			
 			private function setCurrentItem(e:ItemEvent):void {
@@ -95,8 +120,8 @@
 				<s:SolidColor color="#000000"/>
 			</s:fill>
 		</s:Rect>
-		<mx:Button id="buildMapButton" x="110.5" y="182.75" label="Build"/>
-	
+		<mx:Button id="buildXMLButton" x="110.5" y="182.75" label="XML"/>
+		<s:Button id="buildTextureButton" x="14" y="182" label="Textur"/>
 		<mx:Form x="43.9" y="37.9" borderVisible="false" paddingBottom="0" paddingLeft="10" paddingTop="0">
 			<mx:FormItem label="Rows" width="120">
 				<s:TextInput id="rowsTxt" width="70" text="16"/>
@@ -109,6 +134,7 @@
 		<mx:Text id="roadOutput" y="480" width="100%" height="30" color="#FFFFFF" text="Output"/>
 		<s:TextInput id="mapNameTextInput" x="10" y="10" width="103" text="Map Name"/>
 		<levelEditor:ItemAccordion id="itemAccordion" x="10" y="207" width="180" height="200"/>	
+		
 	</s:Group>
 	<mx:TabNavigator id="levelTabNavigator" selectedTabTextStyleName="selectdTab" left="210" right="10" top="10" bottom="10"/>
 </s:Group>

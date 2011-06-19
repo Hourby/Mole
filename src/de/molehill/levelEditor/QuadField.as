@@ -1,5 +1,7 @@
 package de.molehill.levelEditor {	
 	
+	import de.molehill.game.map.field.Field;
+	
 	import flash.display.BitmapData;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -8,15 +10,14 @@ package de.molehill.levelEditor {
 	
 	public class QuadField extends EventDispatcher {	
 		
-		private var _cost:uint;
+
 		private var _view:QuadFieldView;
-		private var _free:Boolean;
-		private var _heightMapInMeter:Number;
-		private var _isStartField:Boolean;
 		private var _coordinates:Point;
+		private var _field:Field;
 		
 		public function QuadField(coordinates:Point,width:uint, height:uint) {
 			_coordinates = coordinates;
+			_field = new Field(coordinates,0,true);
 			_view = new QuadFieldView(width,height);
 			_view.addEventListener("fieldViewClicked", onClickedView);
 		}	
@@ -38,19 +39,14 @@ package de.molehill.levelEditor {
 		public function get coordinates():Point { return _coordinates; }
 
 		
-		public function get cost():uint { return _cost; }
-		public function set cost(cost:uint):void { 
-			_cost = cost;
+		public function get type():uint { return _field.type; }
+		public function set type(type:uint):void { 
+			_field.type = type;
 		}
 		
-		public function get free():Boolean { return _free; }
+		public function get free():Boolean { return _field.isFree; }
 		public function set free(isFree:Boolean):void {
-			_free = free;
-		}
-
-		public function get heightMapInMeter ():Number {	return _heightMapInMeter; }
-		public function set heightMapInMeter (meter:Number):void {
-			_heightMapInMeter = heightMapInMeter;
+			_field.isFree = free;
 		}
 		
 		public function get underground():BitmapData { return _view.undergroundMaterial; }
@@ -58,9 +54,26 @@ package de.molehill.levelEditor {
 			_view.setTexture(underground);
 		}
 
-		public function get isStartField ():Boolean { return _isStartField; }
-		public function set isStartField (isStartField:Boolean):void {
-			_isStartField = isStartField;
+		public function get isTargetPoint ():Boolean { return _field.isTargetPoint; }
+		public function set isTargetPoint (isTargetPoint:Boolean):void {
+			_field.isTargetPoint = isTargetPoint;
 		}
+		
+		public function get isEntryPoint ():Boolean { return _field.isEntryPoint; }
+		public function set isEntryPoint (isEntryPoint:Boolean):void {
+			_field.isEntryPoint = isEntryPoint;
+		}
+
+
+		public function get field():Field
+		{
+			return _field;
+		}
+
+		public function set field(value:Field):void
+		{
+			_field = value;
+		}
+
 	}
 }

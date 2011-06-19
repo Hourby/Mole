@@ -14,16 +14,16 @@ package de.molehill.game.map {
 		protected var _model : MapModel;
 		protected var _view : MapView;
 
-		public function Map(rows : uint, columns : uint) {
-			_model = new MapModel(rows, columns);
+		public function Map(xml:XML) {
+			_model = new MapModel(xml);
 			_view = new MapView();
 			_controller = new MapController(_model, _view);
 			initListener();
 		}
 
 		private function initListener() : void {
-			for (var j : uint = 0; j < _model.rows; j++) {
-				for (var i : uint = 0; i < _model.columns; i++) {
+			for (var j : uint = 0; j < _model.size; j++) {
+				for (var i : uint = 0; i < _model.size; i++) {
 					_model.getField(new Point(j, i)).addEventListener(FieldEvent.FIELD_SELCECTED, onFieldSelected);
 				}
 			}
@@ -37,6 +37,10 @@ package de.molehill.game.map {
 		public function showReachableFields(unitPosition : Point, actionPoints : uint) : void {
 			_controller.showReachableFields(unitPosition, actionPoints);
 		}
+		
+		public function hideReachableFields() : void {
+			_controller.hideReachableFields();
+		}
 
 		public function get view() : MapView {
 			return _view;
@@ -46,9 +50,9 @@ package de.molehill.game.map {
 			_controller.handleAddUnit(position);
 		}
 		
-		public function handleMoveUnit(oldPosition:Point, newPosition:Point):void
+		public function handleMoveUnit(oldPosition:Point, newPosition:Point):Vector.<Point>
 		{
-			_controller.handleMoveUnit(oldPosition, newPosition);			
+			return _controller.handleMoveUnit(oldPosition, newPosition);			
 		}
 	}
 }
