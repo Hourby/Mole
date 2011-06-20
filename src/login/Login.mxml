@@ -23,7 +23,7 @@
 					dispatchEvent(new LoginEvent(LoginEvent.LOGIN, userName.text, password.text));
 				
 					//loginActionResult3.token = samplePhp.loginAction(userName.text, password.text);
-					trace('Huhu');
+					trace('Blah');
 					
 				} else {
 					Alert.show('Es ist ein Fehler aufgetreten', 'Fehler');
