@@ -3,59 +3,146 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:samplephp="services.samplephp.*"
-		 width="808" height="598">
-	
+		 xmlns:valueObjects="de.molehill.net.valueObjects.*"
+		 width="400" height="300" contentBackgroundColor="#000000">
+	<fx:Declarations>
+		<!-- Platzieren Sie nichtvisuelle Elemente (z. B. Dienste, Wertobjekte) hier -->
+		<samplephp:SamplePhp id="samplePhp"
+							 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail) + 'Hier ist ein Fehler'"
+							 showBusyCursor="true"/>
+		<s:CallResponder id="getItemResult" result="login_result(event)"/>
+		<s:CallResponder id="createItemResult" result="register_result(event)"/>
+	</fx:Declarations>
 	<fx:Script>
-		<![CDATA[
+		<![CDATA[			
 			import mx.controls.Alert;
+			import mx.events.FlexEvent;
 			import mx.messaging.AbstractConsumer;
 			import mx.rpc.AsyncToken;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			import mx.utils.ObjectUtil;
 			
-			protected function loginButton(event:MouseEvent):void
+			protected function password_enterHandler(event:FlexEvent):void
+			{
+				login();
+			}
+			
+			protected function loginButton(event:Event):void
+			{
+				login();
+				//comment
+			}
+			
+			private function login():void
 			{
 				if (userName.text.length > 0 && 
 					password.text.length > 0)
-				{
-					
-					dispatchEvent(new LoginEvent(LoginEvent.LOGIN, userName.text, password.text));
-				
-					//loginActionResult3.token = samplePhp.loginAction(userName.text, password.text);
-					trace('Blah');
-					
+				{					
+					getItemResult.token = samplePhp.getItem(userName.text, password.text);
 				} else {
-					Alert.show('Es ist ein Fehler aufgetreten', 'Fehler');
+					Alert.show('Die Felder müssen ausgefüllt werden.', 'Leere Eingabe');
+				}
+			}
+			
+			protected function login_result(event:ResultEvent):void {
+				
+				if (event.result) {
+					dispatchEvent(new LoginEvent(LoginEvent.OK));
+				} else {
+					loginError.visible = true;
 				}
 				
 			}
 			
-			protected function login_result(event:ResultEvent):void {
-				Alert.show(ObjectUtil.toString(event.result), "test");
+			protected function register_result(event:ResultEvent):void {
+				if (event.result) {
+					currentState = "State1";
+				} else {
+					currentState = "ErrorState";
+				}
 				
 			}
 			
-			protected function remoteObject_fault(event:FaultEvent):void {
-				Alert.show(event.fault.faultString+"\n\n" + event.fault.faultDetail, "Fehler");
+			protected function changeState_register(e:MouseEvent):void {
+				currentState = "Register";
 			}
+			
+			/**
+			 * register function 
+			 * save an new user to the database 
+			 * 
+			 */
+			protected function registerButton(event:MouseEvent):void
+			{
+				if (userName0.text.length > 0 &&
+					password0.text.length > 0 &&
+					passwordRepeat.text.length > 0 &&
+					email.text.length > 0  ) 
+				{
+					if (password0.text  == passwordRepeat.text) {
+						createItemResult.token = samplePhp.createItem(userName0.text, password0.text, email.text);
+					} else {
+						repeatError.visible = true;
+					}
+					
+				} else {
+					Alert.show('Die Felder müssen ausgefüllt werden.', 'Leere Eingabe');
+				}
+				
+			}
+			
+			
+
+			
 		]]>
 	</fx:Script>
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="Register"/>
+		<s:State name="ErrorState"/>
+	</s:states>
 	
-	<fx:Declarations>
-		<!-- Platzieren Sie nichtvisuelle Elemente (z. B. Dienste, Wertobjekte) hier -->
-		<s:CallResponder id="loginActionResult"/>
-		<s:CallResponder id="loginActionResult3" />
-		<samplephp:SamplePhp id="samplePhp"
-							   fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail) + 'Hier ist ein Fehler'"
-							   showBusyCursor="true"/>
-	</fx:Declarations>
+	<s:Rect left="0" right="0" top="0" bottom="0" alpha="0.6" radiusX="30">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+		<s:fill>
+			<s:SolidColor color="#000000"/>
+		</s:fill>
+	</s:Rect>
+	
+
+
+	<s:Label includeIn="State1" x="107" y="129" color="#FFFFFF" text="Passwort"/>
+	<s:Label includeIn="State1" x="107" y="67" color="#FFFFFF" text="Benutzername"/>
+	<s:TextInput id="userName" includeIn="State1" x="107" y="87" contentBackgroundColor="#FFFFFF"/>
+	<s:TextInput id="password" includeIn="State1" x="107" y="149" contentBackgroundColor="#FFFFFF"
+				 displayAsPassword="true" enter="password_enterHandler(event)"/>
+	<s:Button id="button" includeIn="State1" x="107" y="194" label="Login" click="loginButton(event)"/>
+	<s:Button includeIn="State1" x="263" y="194" label="Register" click="changeState_register(event)"/>
+	<s:Label includeIn="Register" x="50" y="22" backgroundAlpha="0.0" backgroundColor="#FFFFFF"
+			 color="#FFFFFF" text="Benutzername"/>
+	<s:Label includeIn="Register" x="50" y="85" backgroundAlpha="0.0" backgroundColor="#FFFFFF"
+			 color="#FFFFFF" text="Email"/>
+	<s:Label includeIn="Register" x="50" y="164" backgroundAlpha="0.0" backgroundColor="#FFFFFF"
+			 color="#FFFFFF" text="Passwort"/>
+	<s:Label includeIn="Register" x="50" y="236" backgroundAlpha="0.0" backgroundColor="#FFFFFF"
+			 color="#FFFFFF" text="Passwort Wiederholung"/>
+	<s:Label id="repeatError" includeIn="Register" visible="false" x="50" y="281" color="#FFFFFF"
+			 text="Die Eingaben müssen gleich sein."/>
+	<s:TextInput id="userName0" includeIn="Register" x="50" y="37" contentBackgroundColor="#FFFFFF"/>
+	<s:TextInput id="email" includeIn="Register" x="50" y="109" contentBackgroundColor="#FFFFFF"/>
+	<s:TextInput id="password0" includeIn="Register" x="50" y="182" contentBackgroundColor="#FFFFFF"
+				 displayAsPassword="true"/>
+	<s:TextInput id="passwordRepeat" includeIn="Register" x="50" y="256"
+				 contentBackgroundColor="#FFFFFF" displayAsPassword="true"/>
+	<s:Button id="button2" includeIn="Register" x="275" y="26" label="Registrieren"
+			  click="registerButton(event)"/>
+	<s:Label includeIn="ErrorState" x="64" y="44" color="#FF0000" fontFamily="Arial" fontSize="18"
+			 fontWeight="bold" text="Es ist ein Fehler aufgetreten"/>
+	<s:Label id="loginError" includeIn="State1" visible="false" y="37" color="#A91E1E" fontSize="21"
+			 fontWeight="bold" horizontalCenter="0" text="Dein Login war nicht korrekt "/>
 	
 	
-	<s:Button id="button" x="254" y="297" label="Login" click="loginButton(event)"/>
-	<s:Button x="410" y="297" label="Register"/>
-	<s:Label  x="254" y="232" color="#FFFFFF" text="Passwort"/>
-	<s:Label  x="254" y="170" color="#FFFFFF" text="Benutzername"/>
-	<s:TextInput id="password" x="254" y="252"/>
-	<s:TextInput id="userName" x="254" y="190"/>
 </s:Group>
